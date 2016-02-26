@@ -52,13 +52,11 @@ class Puissance4(Tk):
                 self.matrice_J1[high, poz] = 1
             elif (joueur == 2):
                 self.matrice_J2[high, poz] = 1
-            if self.coup_gagnant(high, poz,joueur):
-                self.reset()
-                return
             self.tableau_jeu[poz] = high+1
             self.afficher()
-            
-        #print self.matrice_J1
+            if self.coup_gagnant(high, poz,joueur):
+                return True
+        return False
 
     def coup_gagnant(self, x, y, joueur):
         if (joueur == 1):
