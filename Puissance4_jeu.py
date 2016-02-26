@@ -20,7 +20,6 @@ class Puissance4(Tk):
     H = hauteur*1./longueur * L
     n = 4
     
-    
     def __init__(self):
         Tk.__init__(self)
         self.matrice_J1 = np.zeros((Puissance4.hauteur,Puissance4.longueur))
@@ -173,16 +172,25 @@ class Puissance4(Tk):
             coup_au_hasard(self, joueur)
         except IndexError:
             self.reset()
+            
+    def retirer(self,colonne,joueur):
+        j = self.tableau_jeu[colonne]-1
+        if (joueur == 1):
+            self.matrice_J1[colonne,j] = 0
+        elif (joueur == 2):
+            self.matrice_J2[colonne,j] = 0
+        self.tableau_jeu[colonne] -= 1
+        
 
-a = Puissance4()
-s = 0
-while True:
-    print s
-    r = rd.randint(0,Puissance4.longueur-1)
-    a.jouer(r, s%2+1)
-    a.afficher()
-    a.after(500)
-    s+=1
+#a = Puissance4()
+#s = 0
+#while True:
+#    print s
+#    r = rd.randint(0,Puissance4.longueur-1)
+#    a.jouer(r, s%2+1)
+#    a.afficher()
+#    a.after(500)
+#    s+=1
 
 
 
