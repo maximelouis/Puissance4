@@ -13,12 +13,8 @@ import Puissance4.py
 
 class P4IA:
     
+    discount = 0.5
     
     
-    def jouerIA(self,p,joueur):
-        for i in range(Puissance4.longueur):
-            if p.jouer(i,joueur):
-                return i
-            p.retirer(i,joueur)
-            
-            
+    def jouerIA_level(self, p,joueur, n):
+
