@@ -12,6 +12,17 @@ import numpy as np
 
 # Pour les 7 coups possibles j'obtient la note récursivement
 
+def calculer_score(arbre):   
+    if len(arbre.fils) != 0:
+        for elt in arbre.fils:
+            calculer_score(elt)
+    score = 0
+    for elt in arbre.fils:
+        score += elt.value[1]
+    score = score*P4IA.discount/len(arbre.fils)
+    arbre.value[1] = score
+
+
 class Arbre:
         
     def __init__(self, value):
@@ -44,7 +55,7 @@ class P4IA:
         if (n == 0):
             for elt in self.partie.coups_possibles():
                 if (self.partie.jouer(elt, self.joueur)):
-                    arbre.add_son((elt,self.joueur))
+                    arbre.add_son((elt,1))
                 else:
                     arbre.add_son((elt,0))
                 self.partie.retirer(elt)
@@ -61,7 +72,6 @@ class P4IA:
                 self.partie.retirer(elt)
             
     
-
         
 
 a = PJeu.Puissance4()
