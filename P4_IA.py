@@ -79,6 +79,8 @@ class P4IA:
         calculer_score(self.tree)
 
     def coup_IA(self):
+        self.build_tree2()
+        self.update_scores()
         coup_max = 0
         coup_a_jouer = 0
         for i, elt in enumerate(self.tree.fils):

@@ -19,8 +19,8 @@ class Puissance4(Tk):
     
     L = 500 #Largeur de la fenêtre
     longueur = 7
-    hauteur = 6
-    H = hauteur*1./longueur * L
+    hauteur = 7
+    H = (hauteur*1./longueur) * L
     n = 4
     
     def callback(self, event):
@@ -133,9 +133,7 @@ class Puissance4(Tk):
         
         if (tableau[2] >= Puissance4.n):
            print("le joueur {} a gagné".format(joueur))
-           return True
-        
-        
+           return True          
         #Vers le bas à gauche
         i = x
         j = y        
@@ -172,7 +170,6 @@ class Puissance4(Tk):
                     x0, y0 = convert_coordinates(i, j+1)
                     x1, y1= convert_coordinates(i+1, j)
                     self.canvas.create_oval(y0, Puissance4.H-x0, y1, Puissance4.H-x1, outline="gray", fill="yellow", width=2, tag="J2")
-        self.canvas.update()
         self.frame.update()
 
     def coups_possibles(self):
@@ -202,7 +199,11 @@ class Puissance4(Tk):
         print coup
         self.jouer(coup, 2)
 
-
+a = Puissance4()
+joueur = 1
+while True:
+    IA = P4IA(a,joueur)
+    a.jouer(IA.coup_IA()
 
 
 
