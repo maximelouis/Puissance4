@@ -7,6 +7,7 @@ Created on Fri Feb 26 21:27:56 2016
 
 # IA du Puissance4
 
+import random as rd
 import numpy as np
 
 # Pour les 7 coups possibles j'obtient la note récursivement
@@ -63,10 +64,14 @@ class P4IA:
             if (n%2 == 0):
                 j = self.joueur
             else:
-                j = self.joueur - (-1)**self.joueur
+                j = int(self.joueur - (-1)**self.joueur)
+            if (j == self.joueur):
+                par = 1
+            else:
+                par = -1
             for elt in self.partie.coups_possibles():
                 if (self.partie.jouer(elt, j)):
-                    arbre.add_son(elt,j)
+                    arbre.add_son(elt, par)
                 else:
                     arbre.fils.append(self.build_tree(n-1, Arbre(elt,0)))
                 self.partie.retirer(elt)
@@ -81,16 +86,25 @@ class P4IA:
     def coup_IA(self,n):
         self.build_tree2(n)
         self.update_scores()
-        coup_max = 0
-        coup_a_jouer = 0
-        for i, elt in enumerate(self.tree.fils):
-            if elt.value > coup_max:
-                coup_a_jouer = i
+        coup_max = -10
+        coup_a_jouer = []
+        for elt in self.tree.fils:
+            if elt.value > coup_max + 0.001:
+                coup_a_jouer = [elt.coup]
                 coup_max = elt.value
-        return coup_a_jouer
+            elif (elt.value >= coup_max):
+                coup_a_jouer.append(elt.coup)
+        l =len(coup_a_jouer)
+        print l
+        if (l>1):
+            r=rd.randint(0,l-1)
+            return coup_a_jouer[r]
+        else:
+            return coup_a_jouer[0]
 
 
-        
+
+
         
         
         

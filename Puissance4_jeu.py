@@ -41,9 +41,14 @@ class Puissance4(Tk):
         self.tableau_jeu = np.zeros(Puissance4.longueur)
         self.frame = Frame(self, width=Puissance4.L, height=Puissance4.H)
         self.canvas = Canvas(self, width=Puissance4.L, height=Puissance4.H, bg="white")
-        self.frame.bind("<Button-1>", self.callback)
         self.frame.pack()
         self.canvas.pack()
+        joueur = 1
+        while True:
+            print joueur
+            IAL = IA.P4IA(self,joueur)
+            self.jouer(IAL.coup_IA(6),joueur, True)
+            joueur = int(joueur - (-1)**joueur)
     
     def reset(self):
         self.matrice_J1 = np.zeros((Puissance4.hauteur,Puissance4.longueur))
@@ -54,7 +59,7 @@ class Puissance4(Tk):
         self.canvas.pack()
 
     
-    def jouer(self,poz,joueur):
+    def jouer(self,poz,joueur,display=False):
         if (np.sum(self.tableau_jeu) == Puissance4.longueur * Puissance4.hauteur):
             raise IndexError("Egalite")
         if (poz < 0) or (poz >= Puissance4.longueur):
@@ -68,7 +73,8 @@ class Puissance4(Tk):
             elif (joueur == 2):
                 self.matrice_J2[high, poz] = 1
             self.tableau_jeu[poz] = high+1
-            self.afficher()
+            if display:
+                self.afficher()
             if self.coup_gagnant(high, poz,joueur):
                 return True
         return False
@@ -96,7 +102,7 @@ class Puissance4(Tk):
             i -= 1
         
         if (tableau[0] >= Puissance4.n):
-            print("le joueur {} a gagné".format(joueur))
+            #print("le joueur {} a gagné".format(joueur))
             return True
         
         #Vers le haut à gauche
@@ -115,7 +121,7 @@ class Puissance4(Tk):
             j =+ 1
             
         if (tableau[1] >= Puissance4.n):
-           print("le joueur {} a gagné".format(joueur))
+            #print("le joueur {} a gagné".format(joueur))
            return True
         
         #Vers la droite
@@ -132,7 +138,7 @@ class Puissance4(Tk):
             j -= 1
         
         if (tableau[2] >= Puissance4.n):
-           print("le joueur {} a gagné".format(joueur))
+            #print("le joueur {} a gagné".format(joueur))
            return True          
         #Vers le bas à gauche
         i = x
@@ -150,7 +156,7 @@ class Puissance4(Tk):
             j += 1
         
         if (tableau[3] >= Puissance4.n):
-            print("le joueur {} a gagné".format(joueur))
+            #print("le joueur {} a gagné".format(joueur))
             return True
         
         #print tableau
@@ -175,7 +181,7 @@ class Puissance4(Tk):
     def coups_possibles(self):
         l = []
         for i,elt in enumerate(self.tableau_jeu):
-            if (elt<Puissance4.hauteur-1):
+            if (elt < Puissance4.hauteur-1):
                 l.append(i)
         return l
 
@@ -190,10 +196,9 @@ class Puissance4(Tk):
 
 
     def partie_IA(self):
-        self.reset()
-        self.frame.bind("<Button-1>", self.callback)
-        self.frame.pack()
-        self.canvas.pack()
+#        self.reset()
+#        self.frame.bind("<Button-1>", self.callback)
+#        self.frame.pack()
         ARTIF = IA.P4IA(self, 2)
         coup = ARTIF.coup_IA()
         print coup
@@ -201,11 +206,8 @@ class Puissance4(Tk):
 
 a = Puissance4()
 joueur = 1
-print joueur
-IAL = IA.P4IA(a,joueur)
-a.jouer(IAL.coup_IA(4))
-a.after(500)
-joueur = joueur - (-1)**joueur
+a.mainloop()
+
 
 
 
