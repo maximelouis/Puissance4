@@ -16,26 +16,27 @@ def calculer_score(arbre):
     if len(arbre.fils) != 0:
         for elt in arbre.fils:
             calculer_score(elt)
-    score = 0
-    for elt in arbre.fils:
-        score += elt.value[1]
-    score = score*P4IA.discount/len(arbre.fils)
-    arbre.value[1] = score
+        score = 0
+        for elt in arbre.fils:
+            score += elt.value
+        score = score*P4IA.discount/len(arbre.fils)
+        arbre.value = score
 
 
 class Arbre:
         
-    def __init__(self, value):
+    def __init__(self, coup, value):
         self.value = value
+        self.coup = coup
         self.fils = []
         
-    def add_son(self,i):
-        self.fils.append(Arbre(i))
+    def add_son(self,coup,value):
+        self.fils.append(Arbre(coup,value))
         
 def afficher(a):
     for elt in a.fils:
         afficher(elt)
-    print a.value
+    print a.coup, a.value
         
 
 
@@ -47,7 +48,7 @@ class P4IA:
     discount = 0.5
     
     def __init__(self, P, joueur):
-        self.tree = Arbre((-1,0))
+        self.tree = Arbre(-1,0)
         self.partie = P
         self.joueur = joueur
         
@@ -55,9 +56,9 @@ class P4IA:
         if (n == 0):
             for elt in self.partie.coups_possibles():
                 if (self.partie.jouer(elt, self.joueur)):
-                    arbre.add_son((elt,1))
+                    arbre.add_son(elt,1)
                 else:
-                    arbre.add_son((elt,0))
+                    arbre.add_son(elt,0)
                 self.partie.retirer(elt)
         else:
             if (n%2 == 0):
@@ -66,22 +67,29 @@ class P4IA:
                 j = self.joueur - (-1)**self.joueur
             for elt in self.partie.coups_possibles():
                 if (self.partie.jouer(elt, j)):
-                    print j
-                    arbre.add_son((elt,j))
+                    arbre.add_son(elt,j)
                 else:
-                    arbre.add_son(self.build_tree(n-1, Arbre((elt,0))))
+                    arbre.fils.append(self.build_tree(n-1, Arbre(elt,0)))
                 self.partie.retirer(elt)
         return arbre
 
     def build_tree2(self, n):
-        self.tree = self.build_tree(n , Arbre((-1,0)))
+        self.tree = self.build_tree(n , Arbre(-1,0))
+
+    def update_scores(self):
+        calculer_score(self.tree)
 
 
 
 a = PJeu.Puissance4()
+a.jouer(3,1)
+a.jouer(4,1)
+
 s = P4IA(a, 1)
 s.build_tree2(4)
-afficher(s.tree)
+s.update_scores()
+for elt in s.tree.fils:
+    print elt.value
 
 
         
