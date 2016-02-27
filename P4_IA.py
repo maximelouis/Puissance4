@@ -7,7 +7,6 @@ Created on Fri Feb 26 21:27:56 2016
 
 # IA du Puissance4
 
-import Puissance4_jeu as PJeu
 import numpy as np
 
 # Pour les 7 coups possibles j'obtient la note récursivement
@@ -87,16 +86,6 @@ class P4IA:
                 coup_a_jouer = i
                 coup_max = elt.value
         return coup_a_jouer
-
-a = PJeu.Puissance4()
-a.jouer(3,1)
-a.jouer(4,1)
-
-s = P4IA(a, 1)
-s.build_tree2(4)
-s.update_scores()
-for elt in s.tree.fils:
-    print elt.value
 
 
         

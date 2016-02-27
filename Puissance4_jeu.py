@@ -8,17 +8,31 @@ Created on Tue Feb 23 18:30:17 2016
 import numpy as np
 import random as rd
 from Tkinter import *
+import P4_IA as IA
 
 def convert_coordinates(i, j):#Converti les coordonnées dans le tableau en coordonnée sur la fenêtre
     return Puissance4.H - (Puissance4.hauteur-i) * Puissance4.H / Puissance4.hauteur, j * Puissance4.L / Puissance4.longueur
 
+
+
 class Puissance4(Tk):
     
-    L = 800 #Largeur de la fenêtre
+    L = 500 #Largeur de la fenêtre
     longueur = 7
     hauteur = 6
     H = hauteur*1./longueur * L
     n = 4
+    
+    def callback(self, event):
+        self.frame.focus_set()
+        x = event.x
+        x = int(x*Puissance4.longueur/Puissance4.L)
+        self.jouer(x,1)
+        ARTIF = IA.P4IA(self, 2)
+        joueur = 2
+        coup = ARTIF.coup_IA()
+        self.jouer(coup, 2)
+
     
     def __init__(self):
         Tk.__init__(self)
@@ -27,6 +41,8 @@ class Puissance4(Tk):
         self.tableau_jeu = np.zeros(Puissance4.longueur)
         self.frame = Frame(self, width=Puissance4.L, height=Puissance4.H)
         self.canvas = Canvas(self, width=Puissance4.L, height=Puissance4.H, bg="white")
+        self.frame.bind("<Button-1>", self.callback)
+        self.frame.pack()
         self.canvas.pack()
     
     def reset(self):
@@ -36,7 +52,6 @@ class Puissance4(Tk):
         self.frame = Frame(self, width=Puissance4.L, height=Puissance4.H)
         self.canvas = Canvas(self, width=Puissance4.L, height=Puissance4.H, bg="white")
         self.canvas.pack()
-
 
     
     def jouer(self,poz,joueur):
@@ -53,8 +68,7 @@ class Puissance4(Tk):
             elif (joueur == 2):
                 self.matrice_J2[high, poz] = 1
             self.tableau_jeu[poz] = high+1
-#            self.afficher()
-#            self.after(50)
+            self.afficher()
             if self.coup_gagnant(high, poz,joueur):
                 return True
         return False
@@ -159,7 +173,7 @@ class Puissance4(Tk):
                     x1, y1= convert_coordinates(i+1, j)
                     self.canvas.create_oval(y0, Puissance4.H-x0, y1, Puissance4.H-x1, outline="gray", fill="yellow", width=2, tag="J2")
         self.canvas.update()
-        self.canvas.update()
+        self.frame.update()
 
     def coups_possibles(self):
         l = []
@@ -178,16 +192,17 @@ class Puissance4(Tk):
             self.matrice_J2[s-1,colonne] = 0
 
 
+    def partie_IA(self):
+        self.reset()
+        self.frame.bind("<Button-1>", self.callback)
+        self.frame.pack()
+        self.canvas.pack()
+        ARTIF = IA.P4IA(self, 2)
+        coup = ARTIF.coup_IA()
+        print coup
+        self.jouer(coup, 2)
 
-#a = Puissance4()
-#s = 0
-#while True:
-#    print s
-#    r = rd.randint(0,Puissance4.longueur-1)
-#    a.jouer(r, s%2+1)
-#    a.afficher()
-#    a.after(500)
-#    s+=1
+
 
 
 
