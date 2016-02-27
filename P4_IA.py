@@ -21,10 +21,10 @@ class Arbre:
     def add_son(self,i):
         self.fils.append(Arbre(i))
         
-    def afficher(self):
-        for elt in self.fils:
-            elt.afficher()
-        print self.value
+def afficher(a):
+    for elt in a.fils:
+        afficher(elt)
+    print a.value
         
 
 
@@ -44,7 +44,7 @@ class P4IA:
         if (n == 0):
             for elt in self.partie.coups_possibles():
                 if (self.partie.jouer(elt, self.joueur)):
-                    arbre.add_son((elt,self.joueur))
+                    arbre.add_son((elt,1))
                 else:
                     arbre.add_son((elt,0))
                 self.partie.retirer(elt)
@@ -55,19 +55,23 @@ class P4IA:
                 j = self.joueur - (-1)**self.joueur
             for elt in self.partie.coups_possibles():
                 if (self.partie.jouer(elt, j)):
+                    print j
                     arbre.add_son((elt,j))
                 else:
                     arbre.add_son(self.build_tree(n-1, Arbre((elt,0))))
                 self.partie.retirer(elt)
-            
-    
+        return arbre
 
-        
+    def build_tree2(self, n):
+        self.tree = self.build_tree(n , Arbre((-1,0)))
+
+
 
 a = PJeu.Puissance4()
 s = P4IA(a, 1)
-s.build_tree(4,s.tree)
-s.tree.afficher()
+s.build_tree2(4)
+afficher(s.tree)
+
 
         
         
