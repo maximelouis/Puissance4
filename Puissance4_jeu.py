@@ -14,28 +14,22 @@ def convert_coordinates(i, j):#Converti les coordonnées dans le tableau en coor
 
 class Puissance4(Tk):
     
-    L = 500 #Largeur de la fenêtre
+    L = 800 #Largeur de la fenêtre
     longueur = 7
     hauteur = 6
     H = hauteur*1./longueur * L
     n = 4
     
-    def __init__(self, matrice_J1, matrice_J2, new=True):
-        self.joueur = 1
+    def __init__(self):
         Tk.__init__(self)
-        if new:
-            self.matrice_J1 = np.zeros((Puissance4.hauteur,Puissance4.longueur))
-            self.matrice_J2 = np.zeros((Puissance4.hauteur,Puissance4.longueur))
-        else:
-            self.matrice_J1 = matrice_J1
-            self.matrice_J2 = matrice_J2
+        self.matrice_J1 = np.zeros((Puissance4.hauteur,Puissance4.longueur))
+        self.matrice_J2 = np.zeros((Puissance4.hauteur,Puissance4.longueur))
         self.tableau_jeu = np.zeros(Puissance4.longueur)
         self.frame = Frame(self, width=Puissance4.L, height=Puissance4.H)
         self.canvas = Canvas(self, width=Puissance4.L, height=Puissance4.H, bg="white")
         self.canvas.pack()
     
     def reset(self):
-        self.joueur = 1
         self.matrice_J1 = np.zeros((Puissance4.hauteur,Puissance4.longueur))
         self.matrice_J2 = np.zeros((Puissance4.hauteur,Puissance4.longueur))
         self.tableau_jeu = np.zeros(Puissance4.longueur)
@@ -59,7 +53,8 @@ class Puissance4(Tk):
             elif (joueur == 2):
                 self.matrice_J2[high, poz] = 1
             self.tableau_jeu[poz] = high+1
-            self.afficher()
+#            self.afficher()
+#            self.after(50)
             if self.coup_gagnant(high, poz,joueur):
                 return True
         return False
@@ -170,16 +165,17 @@ class Puissance4(Tk):
         l = []
         for i,elt in enumerate(self.tableau_jeu):
             if (elt<Puissance4.hauteur-1):
-                i.append(l)
+                l.append(i)
         return l
 
             
     def retirer(self,colonne):
         s = self.tableau_jeu[colonne]
-        if (self.matrice_J1[s,colonne] == 1):
-            self.matrice_J1[s,colonne] = 0
-        if (self.matrice_J1[s,colonne] == 1):
-            self.matrice_J1[s,colonne] = 0
+        self.tableau_jeu[colonne] -= 1
+        if (self.matrice_J1[s-1,colonne] == 1):
+            self.matrice_J1[s-1,colonne] = 0
+        if (self.matrice_J2[s-1,colonne] == 1):
+            self.matrice_J2[s-1,colonne] = 0
 
 
 

@@ -7,24 +7,24 @@ Created on Fri Feb 26 21:27:56 2016
 
 # IA du Puissance4
 
-import Puissance4.py
+import Puissance4_jeu as PJeu
 import numpy as np
 
 # Pour les 7 coups possibles j'obtient la note récursivement
 
 class Arbre:
         
-    def __init__(self, value, dernier_jouer, grille):
-        self.dernier_joueur = -1
-        self.coup_actuel = -1
+    def __init__(self, value):
         self.value = value
         self.fils = []
-        self.grille = grille      
         
-    def add_son(self,arbre):
-        self.fils.append(arbre)
+    def add_son(self,i):
+        self.fils.append(Arbre(i))
         
-    
+    def afficher(self):
+        for elt in self.fils:
+            elt.afficher()
+        print self.value
         
 
 
@@ -35,30 +35,40 @@ class P4IA:
     n = 10
     discount = 0.5
     
-    def __init__(self, P):
-        self.tree = Arbre(0)
+    def __init__(self, P, joueur):
+        self.tree = Arbre((-1,0))
         self.partie = P
+        self.joueur = joueur
         
-    def build_tree(self, prof=n, partie, arbre):
-        if self.partie.jouer(dernier_coup):
-                arbre.value = self.part #n doit être pair
-                self.partie.retirer(dernier_coup)
-        if n == 0: 
-            
+    def build_tree(self, n, arbre):#n should be even when we call build_tree the first time.
+        if (n == 0):
+            for elt in self.partie.coups_possibles():
+                if (self.partie.jouer(elt, self.joueur)):
+                    arbre.add_son((elt,self.joueur))
+                else:
+                    arbre.add_son((elt,0))
+                self.partie.retirer(elt)
         else:
-            for i in self.tree.grille.coups_possibles:
-                self.tree.append(self.build_tree(n-1))
+            if (n%2 == 0):
+                j = self.joueur
+            else:
+                j = self.joueur - (-1)**self.joueur
+            for elt in self.partie.coups_possibles():
+                if (self.partie.jouer(elt, j)):
+                    arbre.add_son((elt,j))
+                else:
+                    arbre.add_son(self.build_tree(n-1, Arbre((elt,0))))
+                self.partie.retirer(elt)
+            
     
 
-    def build_tree(self, n, arbre):
-        if n = 0:
-            for i in self.partie.coups_possibles():
-                if self.partie.jouer(i):
-                    arbre.fils.append(Arbre(i))
-            arbre = self.tree
-
         
-    def jouerIA_level(self, p, joueur, n):
+
+a = PJeu.Puissance4()
+s = P4IA(a, 1)
+s.build_tree(4,s.tree)
+s.tree.afficher()
+
         
         
         
