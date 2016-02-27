@@ -79,7 +79,14 @@ class P4IA:
     def update_scores(self):
         calculer_score(self.tree)
 
-
+    def coup_IA(self):
+        coup_max = 0
+        coup_a_jouer = 0
+        for i, elt in enumerate(self.tree.fils):
+            if elt.value > coup_max:
+                coup_a_jouer = i
+                coup_max = elt.value
+        return coup_a_jouer
 
 a = PJeu.Puissance4()
 a.jouer(3,1)
