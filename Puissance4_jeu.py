@@ -165,7 +165,11 @@ class Puissance4(Tk):
         self.canvas.update()
 
     def coups_possibles(self):
-        #retourne une liste d'entiers
+        l = []
+        for i,elt in enumerate(self.tableau_jeu):
+            if (elt<Puissance4.hauteur-1):
+                i.append(l)
+        return l
 
     def coup_au_hasard(self, joueur):
         r = rd.randint(0,Puissance4.longueur-1)
