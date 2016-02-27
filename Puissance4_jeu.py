@@ -20,10 +20,14 @@ class Puissance4(Tk):
     H = hauteur*1./longueur * L
     n = 4
     
-    def __init__(self):
+    def __init__(self, matrice_J1, matrice_J2, new=True):
         Tk.__init__(self)
-        self.matrice_J1 = np.zeros((Puissance4.hauteur,Puissance4.longueur))
-        self.matrice_J2 = np.zeros((Puissance4.hauteur,Puissance4.longueur))
+        if new:
+            self.matrice_J1 = np.zeros((Puissance4.hauteur,Puissance4.longueur))
+            self.matrice_J2 = np.zeros((Puissance4.hauteur,Puissance4.longueur))
+        else:
+            self.matrice_J1 = matrice_J1
+            self.matrice_J2 = matrice_J2
         self.tableau_jeu = np.zeros(Puissance4.longueur)
         self.frame = Frame(self, width=Puissance4.L, height=Puissance4.H)
         self.canvas = Canvas(self, width=Puissance4.L, height=Puissance4.H, bg="white")
@@ -160,6 +164,8 @@ class Puissance4(Tk):
         self.canvas.update()
         self.canvas.update()
 
+    def coups_possibles(self):
+        #retourne une liste d'entiers
 
     def coup_au_hasard(self, joueur):
         r = rd.randint(0,Puissance4.longueur-1)
