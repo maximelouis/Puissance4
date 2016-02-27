@@ -35,9 +35,9 @@ class P4IA:
     n = 10
     discount = 0.5
     
-    def __init__(self, P4):
+    def __init__(self, P):
         self.tree = Arbre(0)
-        self.partie = P4
+        self.partie = P
         
     def build_tree(self, prof=n, partie, arbre):
         if self.partie.jouer(dernier_coup):
