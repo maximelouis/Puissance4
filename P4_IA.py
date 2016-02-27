@@ -35,19 +35,28 @@ class P4IA:
     n = 10
     discount = 0.5
     
-    def __init__(self):
+    def __init__(self, P4):
         self.tree = Arbre(0)
+        self.partie = P4
         
-    def build_tree(self, prof=n, partie):
-        if n = 0:
-            jouer un coup
-            regarder s'il est bon
-            self
-            self.tree.fils.append()
+    def build_tree(self, prof=n, partie, arbre):
+        if self.partie.jouer(dernier_coup):
+                arbre.value = self.part #n doit être pair
+                self.partie.retirer(dernier_coup)
+        if n == 0: 
+            
         else:
             for i in self.tree.grille.coups_possibles:
-                self.tree.append(self.build_tree(n-1)
-            
+                self.tree.append(self.build_tree(n-1))
+    
+
+    def build_tree(self, n, arbre):
+        if n = 0:
+            for i in self.partie.coups_possibles():
+                if self.partie.jouer(i):
+                    arbre.fils.append(Arbre(i))
+            arbre = self.tree
+
         
     def jouerIA_level(self, p, joueur, n):
         
