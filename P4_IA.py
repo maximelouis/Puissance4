@@ -78,8 +78,8 @@ class P4IA:
     def update_scores(self):
         calculer_score(self.tree)
 
-    def coup_IA(self):
-        self.build_tree2()
+    def coup_IA(self,n):
+        self.build_tree2(n)
         self.update_scores()
         coup_max = 0
         coup_a_jouer = 0
