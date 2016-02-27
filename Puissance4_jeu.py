@@ -21,6 +21,7 @@ class Puissance4(Tk):
     n = 4
     
     def __init__(self, matrice_J1, matrice_J2, new=True):
+        self.joueur = 1
         Tk.__init__(self)
         if new:
             self.matrice_J1 = np.zeros((Puissance4.hauteur,Puissance4.longueur))
@@ -34,6 +35,7 @@ class Puissance4(Tk):
         self.canvas.pack()
     
     def reset(self):
+        self.joueur = 1
         self.matrice_J1 = np.zeros((Puissance4.hauteur,Puissance4.longueur))
         self.matrice_J2 = np.zeros((Puissance4.hauteur,Puissance4.longueur))
         self.tableau_jeu = np.zeros(Puissance4.longueur)
@@ -171,24 +173,15 @@ class Puissance4(Tk):
                 i.append(l)
         return l
 
-    def coup_au_hasard(self, joueur):
-        r = rd.randint(0,Puissance4.longueur-1)
-        print r
-        try:
-            self.jouer(r, joueur)
-        except ValueError:
-            coup_au_hasard(self, joueur)
-        except IndexError:
-            self.reset()
             
-    def retirer(self,colonne,joueur):
-        j = self.tableau_jeu[colonne]-1
-        if (joueur == 1):
-            self.matrice_J1[colonne,j] = 0
-        elif (joueur == 2):
-            self.matrice_J2[colonne,j] = 0
-        self.tableau_jeu[colonne] -= 1
-        
+    def retirer(self,colonne):
+        s = self.tableau_jeu[colonne]
+        if (self.matrice_J1[s,colonne] == 1):
+            self.matrice_J1[s,colonne] = 0
+        if (self.matrice_J1[s,colonne] == 1):
+            self.matrice_J1[s,colonne] = 0
+
+
 
 #a = Puissance4()
 #s = 0
