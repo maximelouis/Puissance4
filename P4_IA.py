@@ -16,11 +16,11 @@ def calculer_score(arbre):
     if len(arbre.fils) != 0:
         for elt in arbre.fils:
             calculer_score(elt)
-        score = 0
+        coup_max = -2
         for elt in arbre.fils:
-            score += elt.value
-        score = score*P4IA.discount/len(arbre.fils)
-        arbre.value = score
+            if elt.value > coup_max:
+                coup_max = elt.value
+        arbre.value = -coup_max*P4IA.discount
 
 
 class Arbre:

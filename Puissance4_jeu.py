@@ -19,7 +19,7 @@ class Puissance4(Tk):
     
     L = 300 #Largeur de la fenêtre
     longueur = 7
-    hauteur = 7
+    hauteur = 6
     H = (hauteur*1./longueur) * L
     n = 4
     
