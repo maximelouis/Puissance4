@@ -44,11 +44,11 @@ class Puissance4(Tk):
         self.frame.pack()
         self.canvas.pack()
         joueur = 1
-        while True:
-            print joueur
-            IAL = IA.P4IA(self,joueur)
-            self.jouer(IAL.coup_IA(6),joueur, True)
-            joueur = int(joueur - (-1)**joueur)
+        #while True:
+         #   print joueur
+          #  IAL = IA.P4IA(self,joueur)
+           # self.jouer(IAL.coup_IA(4),joueur, True)
+            #joueur = int(joueur - (-1)**joueur)
     
     def reset(self):
         self.matrice_J1 = np.zeros((Puissance4.hauteur,Puissance4.longueur))
@@ -118,7 +118,7 @@ class Puissance4(Tk):
         while (0 <= i < Puissance4.hauteur) and (0 <= j < Puissance4.longueur) and (matrice_test[i,j] == 1):
             tableau[1] += 1
             i -= 1
-            j =+ 1
+            j += 1
             
         if (tableau[1] >= Puissance4.n):
             #print("le joueur {} a gagné".format(joueur))
@@ -204,9 +204,9 @@ class Puissance4(Tk):
         print coup
         self.jouer(coup, 2)
 
-a = Puissance4()
-joueur = 1
-a.mainloop()
+#a = Puissance4()
+#joueur = 1
+#a.mainloop()
 
 
 

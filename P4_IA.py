@@ -12,32 +12,73 @@ import numpy as np
 
 # Pour les 7 coups possibles j'obtient la note récursivement
 
+#def calculer_score_bis(arbre):
+    # Principe du minmax: si un -1 est présent après le tour de B 
+    #(coup gagnant pour B), il remonte. S'il n'y a pas de -1, on fait la
+    # moyenne et on la fait remonter (éventuellement réduite par le facteur
+    # discount). Après un tour de A on inverse tout : s'il y a un 1 il remonte
+    # sinon on moyenne.
+
+    
+
 def calculer_score(arbre):
     if len(arbre.fils) != 0:
         for elt in arbre.fils:
             calculer_score(elt)
-        coup_max = -2
-        for elt in arbre.fils:
-            if elt.value > coup_max:
-                coup_max = elt.value
-        arbre.value = -coup_max*P4IA.discount
+        if (arbre.depth%2 == 0):
+            arbre.value = tree_max(arbre.fils)
+        else:
+            arbre.value = tree_min(arbre.fils)
 
+def tree_min(l):
+    mine = 2
+    for elt in l:
+        if elt.value < mine:
+            mine = elt.value
+    return mine
+        
+    
+def tree_max(l):
+    maxe= -2
+    for elt in l:
+        if elt.value > maxe:
+            maxe = elt.value
+    return maxe
+    
 
 class Arbre:
         
-    def __init__(self, coup, value):
+    def __init__(self, coup, value, depth):
         self.value = value
         self.coup = coup
+        self.depth = depth
         self.fils = []
         
     def add_son(self,coup,value):
-        self.fils.append(Arbre(coup,value))
+        self.fils.append(Arbre(coup,value,self.depth + 1))
         
+
+
+
 def afficher(a):
-    for elt in a.fils:
-        afficher(elt)
-    print a.coup, a.value
-        
+    compteur = 0
+    l = []
+    l.append(a)
+    depth = a.depth
+    s = ""
+    while (len(l)>0):
+        f = l.pop(0)
+        if (f.depth != depth):
+            print s
+            print "new line"
+            s = ""
+            depth = f.depth
+        s += ';' + str(f.value)
+        compteur += 1
+        for elt in f.fils:
+            l.append(elt)
+    print s
+    print compteur
 
 
 
@@ -48,15 +89,15 @@ class P4IA:
     discount = 0.5
     
     def __init__(self, P, joueur):
-        self.tree = Arbre(-1,0)
+        self.tree = Arbre(-1,0,0)
         self.partie = P
         self.joueur = joueur
         
     def build_tree(self, n, arbre):#n should be even when we call build_tree the first time.
-        if (n == 0):
+        if (n == 1):
             for elt in self.partie.coups_possibles():
-                if (self.partie.jouer(elt, self.joueur)):
-                    arbre.add_son(elt,1)
+                if (self.partie.jouer(elt, int(self.joueur - (-1)**self.joueur))):
+                    arbre.add_son(elt,-1)
                 else:
                     arbre.add_son(elt,0)
                 self.partie.retirer(elt)
@@ -73,12 +114,12 @@ class P4IA:
                 if (self.partie.jouer(elt, j)):
                     arbre.add_son(elt, par)
                 else:
-                    arbre.fils.append(self.build_tree(n-1, Arbre(elt,0)))
+                    arbre.fils.append(self.build_tree(n-1, Arbre(elt,0,arbre.depth + 1)))
                 self.partie.retirer(elt)
         return arbre
 
     def build_tree2(self, n):
-        self.tree = self.build_tree(n , Arbre(-1,0))
+        self.tree = self.build_tree(n , Arbre(-1,0,0))
 
     def update_scores(self):
         calculer_score(self.tree)
