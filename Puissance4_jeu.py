@@ -30,7 +30,7 @@ class Puissance4(Tk):
         x = int(x*Puissance4.longueur/Puissance4.L)
         self.jouer(x,1,True)
         ARTIF = IA.P4IA(self, 2)
-        ARTIF.coup_IA(6)
+        ARTIF.coup_IA(8)
 
     
     def __init__(self):
