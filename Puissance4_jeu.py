@@ -23,15 +23,14 @@ class Puissance4(Tk):
     H = (hauteur*1./longueur) * L
     n = 4
     
-#    def callback(self, event):
-#        self.frame.focus_set()
-#        x = event.x
-#        x = int(x*Puissance4.longueur/Puissance4.L)
-#        self.jouer(x,1)
-#        ARTIF = IA.P4IA(self, 2)
-#        joueur = 2
-#        coup = ARTIF.coup_IA()
-#        self.jouer(coup, 2)
+    def callback(self, event):
+        print "Clic"
+        self.frame.focus_set()
+        x = event.x
+        x = int(x*Puissance4.longueur/Puissance4.L)
+        self.jouer(x,1,True)
+        ARTIF = IA.P4IA(self, 2)
+        ARTIF.coup_IA(6)
 
     
     def __init__(self):
@@ -41,14 +40,16 @@ class Puissance4(Tk):
         self.tableau_jeu = np.zeros(Puissance4.longueur)
         self.frame = Frame(self, width=Puissance4.L, height=Puissance4.H)
         self.canvas = Canvas(self, width=Puissance4.L, height=Puissance4.H, bg="white")
+        self.reset()
+        self.frame.bind("<Button-1>", self.callback)
         self.frame.pack()
         self.canvas.pack()
-        joueur = 1
+        #joueur = 1
         #while True:
          #   print joueur
-          #  IAL = IA.P4IA(self,joueur)
-           # self.jouer(IAL.coup_IA(4),joueur, True)
-            #joueur = int(joueur - (-1)**joueur)
+         #   IAL = IA.P4IA(self,joueur)
+          #  self.jouer(IAL.coup_IA(4),joueur, True)
+           # joueur = int(joueur - (-1)**joueur)
     
     def reset(self):
         self.matrice_J1 = np.zeros((Puissance4.hauteur,Puissance4.longueur))
@@ -204,8 +205,8 @@ class Puissance4(Tk):
         print coup
         self.jouer(coup, 2)
 
-#a = Puissance4()
-#joueur = 1
+a = Puissance4()
+joueur = 1
 #a.mainloop()
 
 

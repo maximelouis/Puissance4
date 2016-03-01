@@ -12,14 +12,26 @@ import numpy as np
 
 # Pour les 7 coups possibles j'obtient la note récursivement
 
-#def calculer_score_bis(arbre):
+def calculer_score_bis(arbre):
     # Principe du minmax: si un -1 est présent après le tour de B 
     #(coup gagnant pour B), il remonte. S'il n'y a pas de -1, on fait la
     # moyenne et on la fait remonter (éventuellement réduite par le facteur
     # discount). Après un tour de A on inverse tout : s'il y a un 1 il remonte
     # sinon on moyenne.
-
-    
+    discount = 0.8    
+    if len(arbre.fils) != 0:
+        for elt in arbre.fils:
+            calculer_score_bis(elt)
+        if (arbre.depth%2 == 0):
+            if (tree_max(arbre.fils) == 1):
+                arbre.value = tree_max(arbre.fils)
+            else:
+                arbre.value = tree_moy(arbre.fils)*discount
+        else:
+            if (tree_min(arbre.fils) == -1):
+                arbre.value = tree_min(arbre.fils)
+            else:
+                arbre.value = tree_moy(arbre.fils)*discount
 
 def calculer_score(arbre):
     if len(arbre.fils) != 0:
@@ -29,6 +41,14 @@ def calculer_score(arbre):
             arbre.value = tree_max(arbre.fils)
         else:
             arbre.value = tree_min(arbre.fils)
+
+def tree_moy(l):
+    if (l == []):
+        return 0
+    total = 0
+    for elt in l:
+        total += elt.value
+    return float(total)/len(l)
 
 def tree_min(l):
     mine = 2
@@ -122,7 +142,7 @@ class P4IA:
         self.tree = self.build_tree(n , Arbre(-1,0,0))
 
     def update_scores(self):
-        calculer_score(self.tree)
+        calculer_score_bis(self.tree)
 
     def coup_IA(self,n):
         self.build_tree2(n)
@@ -136,12 +156,14 @@ class P4IA:
             elif (elt.value >= coup_max):
                 coup_a_jouer.append(elt.coup)
         l =len(coup_a_jouer)
-        print l
         if (l>1):
             r=rd.randint(0,l-1)
-            return coup_a_jouer[r]
+            print coup_a_jouer[r]
+            self.partie.jouer(coup_a_jouer[r],self.joueur,True)
         else:
-            return coup_a_jouer[0]
+            print coup_a_jouer[0]
+            self.partie.jouer(coup_a_jouer[0],self.joueur,True)
+
 
 
 
